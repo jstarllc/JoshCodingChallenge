@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 type Light struct {
@@ -114,7 +116,13 @@ var (
 	lights Lights
 )
 
-// getLights responds with the list of all lights as JSON.
+// getLights godoc
+// @Summary Get summary of all lights.
+// @Description Get list of all lights in the system.
+// @ID get-lights
+// @Produce json
+// @Success 200 {array} LightConcise
+// @Router /lights [get]
 func getLights(c *gin.Context) {
 	var lightsConcise []LightConcise
 	for _, l := range lights {
@@ -123,8 +131,14 @@ func getLights(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, lightsConcise)
 }
 
-// getLightByID locates the light whose ID value matches the id
-// parameter sent by the client, then removes that light.
+// getLightByID godoc
+// @Summary Get details about a light.
+// @Description Get detailed state of a light in the system.
+// @Param				lightID path string true "ID of light"
+// @ID get-light-by-id
+// @Produce json
+// @Success 200 {object} Light
+// @Router /lights/{lightID} [get]
 func getLightByID(c *gin.Context) {
 	id := c.Param("id")
 
@@ -139,7 +153,14 @@ func getLightByID(c *gin.Context) {
 	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "light not found"})
 }
 
-// addLight adds a light from JSON received in the request body.
+// addLight godoc
+// @Summary Add a light.
+// @Description Add a new light to the system.
+// @Param				light body Light true "Full state of light to add"
+// @ID add-light
+// @Produce json
+// @Success 200 {object} Light
+// @Router /lights [post]
 func addLight(c *gin.Context) {
 	var newLight Light
 
@@ -155,8 +176,14 @@ func addLight(c *gin.Context) {
 	c.IndentedJSON(http.StatusCreated, newLight)
 }
 
-// deleteLightByID locates the light whose ID value matches the id
-// parameter sent by the client, then returns that light as a response.
+// deleteLightByID godoc
+// @Summary Delete a light.
+// @Description Remove a light from the system by ID.
+// @Param				lightID path string true "ID of light"
+// @ID delete-light-by-id
+// @Produce json
+// @Success 204
+// @Router /lights/{lightID} [delete]
 func deleteLightByID(c *gin.Context) {
 	id := c.Param("id")
 
@@ -175,9 +202,15 @@ func deleteLightByID(c *gin.Context) {
 	c.Status(http.StatusNoContent)
 }
 
-// updateLightByID locates the light whose ID value matches the id
-// parameter sent by the client, updates the fields specified in
-// body, then returns that light as a response.
+// updateLightByID godoc
+// @Summary Update a light.
+// @Description Update the state of a light in the system by ID.
+// @Param				lightID path string true "ID of light"
+// @Param				state body LightUpdateReq true "State fields to update"
+// @ID update-light-by-id
+// @Produce json
+// @Success 200 {object} Light
+// @Router /lights/{lightID} [put]
 func updateLightByID(c *gin.Context) {
 	id := c.Param("id")
 
@@ -209,20 +242,29 @@ func updateLightByID(c *gin.Context) {
 	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "light not found"})
 }
 
+// @title Josh.ai Coding Challenge API
+// @version	1.0
+// @description API for interacting with lighting hub simulator for use in the Josh.ai Backend Engineer Coding Challenge.
+// @host 	localhost:8080
+// @BasePath /
 func main() {
 	json.Unmarshal([]byte(defaultLights), &lights)
 
 	router := gin.Default()
 	router.StaticFS("/static", http.Dir("./public_html"))
 	router.LoadHTMLFiles("./public_html/index.html")
+
 	router.GET("/lights", getLights)
 	router.GET("/lights/:id", getLightByID)
 	router.POST("/lights", addLight)
 	router.DELETE("/lights/:id", deleteLightByID)
 	router.PUT("/lights/:id", updateLightByID)
+
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", nil)
 	})
+	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json")
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	router.Run("localhost:8080")
 }
