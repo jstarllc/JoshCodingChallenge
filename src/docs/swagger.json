@@ -1,0 +1,235 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API for interacting with lighting hub simulator for use in the Josh.ai Backend Engineer Coding Challenge.",
+        "title": "Josh.ai Coding Challenge API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/lights": {
+            "get": {
+                "description": "Get list of all lights in the system.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get summary of all lights.",
+                "operationId": "get-lights",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/light.LightConcise"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Add a new light to the system.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Add a light.",
+                "operationId": "add-light",
+                "parameters": [
+                    {
+                        "description": "Full state of light to add",
+                        "name": "light",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/light.Light"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/light.Light"
+                        }
+                    },
+                    "400": {
+                        "description": "invalid light data in body",
+                        "schema": {
+                            "$ref": "#/definitions/light.ErrorResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/lights/{lightID}": {
+            "get": {
+                "description": "Get detailed state of a light in the system.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get details about a light.",
+                "operationId": "get-light-by-id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID of light",
+                        "name": "lightID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/light.Light"
+                        }
+                    },
+                    "404": {
+                        "description": "light not found",
+                        "schema": {
+                            "$ref": "#/definitions/light.ErrorResp"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update the state of a light in the system by ID.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Update a light.",
+                "operationId": "update-light-by-id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID of light",
+                        "name": "lightID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "State fields to update",
+                        "name": "state",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/light.LightUpdateReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/light.Light"
+                        }
+                    },
+                    "400": {
+                        "description": "invalid fields in body",
+                        "schema": {
+                            "$ref": "#/definitions/light.ErrorResp"
+                        }
+                    },
+                    "404": {
+                        "description": "light not found",
+                        "schema": {
+                            "$ref": "#/definitions/light.ErrorResp"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Remove a light from the system by ID.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete a light.",
+                "operationId": "delete-light-by-id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID of light",
+                        "name": "lightID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "404": {
+                        "description": "light not found",
+                        "schema": {
+                            "$ref": "#/definitions/light.ErrorResp"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "light.ErrorResp": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "light.Light": {
+            "type": "object",
+            "properties": {
+                "brightness": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "on": {
+                    "type": "boolean"
+                },
+                "room": {
+                    "type": "string"
+                }
+            }
+        },
+        "light.LightConcise": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "room": {
+                    "type": "string"
+                }
+            }
+        },
+        "light.LightUpdateReq": {
+            "type": "object",
+            "properties": {
+                "brightness": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "on": {
+                    "type": "boolean"
+                },
+                "room": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
