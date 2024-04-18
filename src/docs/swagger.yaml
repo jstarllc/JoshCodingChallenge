@@ -1,6 +1,11 @@
 basePath: /
 definitions:
-  main.Light:
+  light.ErrorResp:
+    properties:
+      error:
+        type: string
+    type: object
+  light.Light:
     properties:
       brightness:
         type: integer
@@ -13,7 +18,7 @@ definitions:
       room:
         type: string
     type: object
-  main.LightConcise:
+  light.LightConcise:
     properties:
       id:
         type: string
@@ -22,7 +27,7 @@ definitions:
       room:
         type: string
     type: object
-  main.LightUpdateReq:
+  light.LightUpdateReq:
     properties:
       brightness:
         type: integer
@@ -52,7 +57,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/main.LightConcise'
+              $ref: '#/definitions/light.LightConcise'
             type: array
       summary: Get summary of all lights.
     post:
@@ -64,14 +69,18 @@ paths:
         name: light
         required: true
         schema:
-          $ref: '#/definitions/main.Light'
+          $ref: '#/definitions/light.Light'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/main.Light'
+            $ref: '#/definitions/light.Light'
+        "400":
+          description: invalid light data in body
+          schema:
+            $ref: '#/definitions/light.ErrorResp'
       summary: Add a light.
   /lights/{lightID}:
     delete:
@@ -88,6 +97,10 @@ paths:
       responses:
         "204":
           description: No Content
+        "404":
+          description: light not found
+          schema:
+            $ref: '#/definitions/light.ErrorResp'
       summary: Delete a light.
     get:
       description: Get detailed state of a light in the system.
@@ -104,7 +117,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/main.Light'
+            $ref: '#/definitions/light.Light'
+        "404":
+          description: light not found
+          schema:
+            $ref: '#/definitions/light.ErrorResp'
       summary: Get details about a light.
     put:
       description: Update the state of a light in the system by ID.
@@ -120,13 +137,21 @@ paths:
         name: state
         required: true
         schema:
-          $ref: '#/definitions/main.LightUpdateReq'
+          $ref: '#/definitions/light.LightUpdateReq'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/main.Light'
+            $ref: '#/definitions/light.Light'
+        "400":
+          description: invalid fields in body
+          schema:
+            $ref: '#/definitions/light.ErrorResp'
+        "404":
+          description: light not found
+          schema:
+            $ref: '#/definitions/light.ErrorResp'
       summary: Update a light.
 swagger: "2.0"

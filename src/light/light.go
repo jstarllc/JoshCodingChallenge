@@ -28,6 +28,10 @@ type LightUpdateReq struct {
 	Brightness *uint8  `json:"brightness",omitempty`
 }
 
+type ErrorResp struct {
+	Message string `json:"error"`
+}
+
 // toConcise converts a Light to a LightConcise
 func toConcise(l *Light) LightConcise {
 	return LightConcise{l.ID, l.Name, l.Room}
@@ -145,6 +149,7 @@ func GetLights(c *gin.Context) {
 // @ID get-light-by-id
 // @Produce json
 // @Success 200 {object} Light
+// @Failure 404 {object} ErrorResp "light not found"
 // @Router /lights/{lightID} [get]
 func GetLightByID(c *gin.Context) {
 	id := c.Param("id")
@@ -157,7 +162,7 @@ func GetLightByID(c *gin.Context) {
 			return
 		}
 	}
-	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "light not found"})
+	c.IndentedJSON(http.StatusNotFound, ErrorResp{"light not found"})
 }
 
 // AddLight godoc
@@ -167,6 +172,7 @@ func GetLightByID(c *gin.Context) {
 // @ID add-light
 // @Produce json
 // @Success 200 {object} Light
+// @Failure 400 {object} ErrorResp "invalid light data in body"
 // @Router /lights [post]
 func AddLight(c *gin.Context) {
 	var newLight Light
@@ -174,7 +180,7 @@ func AddLight(c *gin.Context) {
 	// Call BindJSON to bind the received JSON to
 	// newLight.
 	if err := c.BindJSON(&newLight); err != nil {
-		c.Status(http.StatusBadRequest)
+		c.IndentedJSON(http.StatusBadRequest, ErrorResp{"invalid light data in body"})
 		return
 	}
 
@@ -190,6 +196,7 @@ func AddLight(c *gin.Context) {
 // @ID delete-light-by-id
 // @Produce json
 // @Success 204
+// @Failure 404 {object} ErrorResp "light not found"
 // @Router /lights/{lightID} [delete]
 func DeleteLightByID(c *gin.Context) {
 	id := c.Param("id")
@@ -203,7 +210,7 @@ func DeleteLightByID(c *gin.Context) {
 		}
 	}
 	if len(lights) == len(newLights) {
-		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "light not found"})
+		c.IndentedJSON(http.StatusNotFound, ErrorResp{"light not found"})
 	}
 	lights = newLights
 	c.Status(http.StatusNoContent)
@@ -217,13 +224,15 @@ func DeleteLightByID(c *gin.Context) {
 // @ID update-light-by-id
 // @Produce json
 // @Success 200 {object} Light
+// @Failure 400 {object} ErrorResp "invalid fields in body"
+// @Failure 404 {object} ErrorResp "light not found"
 // @Router /lights/{lightID} [put]
 func UpdateLightByID(c *gin.Context) {
 	id := c.Param("id")
 
 	var updateReq LightUpdateReq
 	if err := c.BindJSON(&updateReq); err != nil {
-		c.Status(http.StatusBadRequest)
+		c.IndentedJSON(http.StatusBadRequest, ErrorResp{"invalid fields in body"})
 		return
 	}
 	for i, l := range lights {
@@ -246,5 +255,5 @@ func UpdateLightByID(c *gin.Context) {
 		}
 	}
 
-	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "light not found"})
+	c.IndentedJSON(http.StatusNotFound, ErrorResp{"light not found"})
 }
