@@ -75,11 +75,13 @@ Note that even with modern versions of the standard library, you will probably h
 **Please send compiled binaries, the source code, and full instructions to compile and run the source code.**
 
 ## Error Handling
-Various errors come up with dealing with IoT devices over the network. What happens when an HTTP request fails? What happens when JSON parsing fails? Your application must be appropriately protected and not stop due to any of these errors.
+Various errors come up when dealing with IoT devices over the network. Your application must be appropriately protected and not stop due to any such errors.
+* What happens when an HTTP request fails?
+* What happens when JSON parsing fails?
 
 ## Challenge Steps and Time Breakdown
 1. Read and understand the challenge (in broad strokes)
-1. Download and run the Simulator
+1. [Download](https://github.com/jstarllc/JoshCodingChallenge/releases/latest) and run the Simulator
 1. Search for and choose header-only libraries to use for HTTP, JSON (and optionally command line parsing). Examples include:
     * [C++11 header-only HTTP/HTTPS client library](https://github.com/yhirose/cpp-httplib)
     * [JSON for Modern C++](https://github.com/nlohmann/json)
