@@ -205,6 +205,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "brightness": {
+                    "description": "Light brightness 0-255",
                     "type": "integer"
                 },
                 "id": {
@@ -239,15 +240,19 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "brightness": {
+                    "description": "Include to set light brightness 0-255",
                     "type": "integer"
                 },
                 "name": {
+                    "description": "Include to set light name",
                     "type": "string"
                 },
                 "on": {
+                    "description": "Include to set light on/off",
                     "type": "boolean"
                 },
                 "room": {
+                    "description": "Include to set light room",
                     "type": "string"
                 }
             }
