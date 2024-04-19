@@ -21,6 +21,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "lights"
+                ],
                 "summary": "Get summary of all lights.",
                 "operationId": "get-lights",
                 "responses": {
@@ -39,6 +42,9 @@ const docTemplate = `{
                 "description": "Add a new light to the system.",
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "lights"
                 ],
                 "summary": "Add a light.",
                 "operationId": "add-light",
@@ -75,6 +81,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "lights"
+                ],
                 "summary": "Get details about a light.",
                 "operationId": "get-light-by-id",
                 "parameters": [
@@ -105,6 +114,9 @@ const docTemplate = `{
                 "description": "Update the state of a light in the system by ID.",
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "lights"
                 ],
                 "summary": "Update a light.",
                 "operationId": "update-light-by-id",
@@ -151,6 +163,9 @@ const docTemplate = `{
                 "description": "Remove a light from the system by ID.",
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "lights"
                 ],
                 "summary": "Delete a light.",
                 "operationId": "delete-light-by-id",

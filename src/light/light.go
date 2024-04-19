@@ -135,6 +135,7 @@ func InitLights(l string) {
 // GetLights godoc
 // @Summary Get summary of all lights.
 // @Description Get list of all lights in the system.
+// @Tags lights
 // @ID get-lights
 // @Produce json
 // @Success 200 {array} LightConcise
@@ -150,6 +151,7 @@ func GetLights(c *gin.Context) {
 // GetLightByID godoc
 // @Summary Get details about a light.
 // @Description Get detailed state of a light in the system.
+// @Tags lights
 // @Param				lightID path string true "ID of light"
 // @ID get-light-by-id
 // @Produce json
@@ -173,6 +175,7 @@ func GetLightByID(c *gin.Context) {
 // AddLight godoc
 // @Summary Add a light.
 // @Description Add a new light to the system.
+// @Tags lights
 // @Param				light body Light true "Full state of light to add"
 // @ID add-light
 // @Produce json
@@ -197,6 +200,7 @@ func AddLight(c *gin.Context) {
 // DeleteLightByID godoc
 // @Summary Delete a light.
 // @Description Remove a light from the system by ID.
+// @Tags lights
 // @Param				lightID path string true "ID of light"
 // @ID delete-light-by-id
 // @Produce json
@@ -224,6 +228,7 @@ func DeleteLightByID(c *gin.Context) {
 // UpdateLightByID godoc
 // @Summary Update a light.
 // @Description Update the state of a light in the system by ID.
+// @Tags lights
 // @Param				lightID path string true "ID of light"
 // @Param				state body LightUpdateReq true "State fields to update"
 // @ID update-light-by-id
