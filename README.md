@@ -22,7 +22,7 @@ The challenge is to create a program which implements a simple integration with 
 ]
 ```
 
-Your output does not need to be pretty printed like this, it can be a single line, however printing tab and newline formatted JSON will probably make debugging easier for yourself. The `on` property is simply a boolean of whether the light is on or off. The `brightness` property in your output should be an integer (from 0 to 100) representing the % brightness of the light.
+Your output does not need to be pretty printed like this, it can be a single line, however printing tab and newline formatted JSON will probably make debugging easier for yourself. The `on` property is simply a boolean of whether the light is on or off. The `brightness` property in your output should be an integer (from 0 to 100) representing the % brightness of the light. Keep in mind that the brightness range used in the API is 0-255, so you will need to convert for your output.
 
 After printing out the initial state, your program should print out any changes in the lights' states. For example, if the Red Lamp turns off, you should print:
 ```json
