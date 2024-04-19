@@ -176,7 +176,7 @@ func GetLightByID(c *gin.Context) {
 // @Param				light body Light true "Full state of light to add"
 // @ID add-light
 // @Produce json
-// @Success 200 {object} Light
+// @Success 201 {object} Light
 // @Failure 400 {object} ErrorResp "invalid light data in body"
 // @Router /lights [post]
 func AddLight(c *gin.Context) {

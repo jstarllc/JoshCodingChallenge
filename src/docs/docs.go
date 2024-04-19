@@ -54,8 +54,8 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/light.Light"
                         }
@@ -245,7 +245,7 @@ var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:8080",
 	BasePath:         "/",
-	Schemes:          []string{},
+	Schemes:          []string{"http"},
 	Title:            "Josh.ai Coding Challenge API",
 	Description:      "API for interacting with lighting hub simulator for use in the Josh.ai Backend Engineer Coding Challenge.",
 	InfoInstanceName: "swagger",

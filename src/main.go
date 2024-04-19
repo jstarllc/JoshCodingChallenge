@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,17 +14,23 @@ import (
 // @version	1.0
 // @description API for interacting with lighting hub simulator for use in the Josh.ai Backend Engineer Coding Challenge.
 // @host 	localhost:8080
+// @schemes http
 // @BasePath /
 func main() {
+	// CLI params
 	var port int
 	var data string
 	flag.IntVar(&port, "port", 8080, "Server port number")
 	flag.StringVar(&data, "data", "", "Initial lights JSON data file")
 	flag.Parse()
 
+	// Initialize light data
 	light.InitLights(data)
 
+	// Initialize server
 	router := gin.Default()
+	router.Use(cors.Default())
+
 	router.StaticFS("/static", http.Dir("./public_html"))
 	router.LoadHTMLFiles("./public_html/index.html")
 
@@ -33,10 +40,12 @@ func main() {
 	router.DELETE("/lights/:id", light.DeleteLightByID)
 	router.PUT("/lights/:id", light.UpdateLightByID)
 
+	// Host simple GUI for control
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", nil)
 	})
 
+	// Run the server
 	addr := "localhost:" + strconv.Itoa(port)
 	router.Run(addr)
 }
