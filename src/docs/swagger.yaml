@@ -60,6 +60,8 @@ paths:
               $ref: '#/definitions/light.LightConcise'
             type: array
       summary: Get summary of all lights.
+      tags:
+      - lights
     post:
       description: Add a new light to the system.
       operationId: add-light
@@ -82,6 +84,8 @@ paths:
           schema:
             $ref: '#/definitions/light.ErrorResp'
       summary: Add a light.
+      tags:
+      - lights
   /lights/{lightID}:
     delete:
       description: Remove a light from the system by ID.
@@ -102,6 +106,8 @@ paths:
           schema:
             $ref: '#/definitions/light.ErrorResp'
       summary: Delete a light.
+      tags:
+      - lights
     get:
       description: Get detailed state of a light in the system.
       operationId: get-light-by-id
@@ -123,6 +129,8 @@ paths:
           schema:
             $ref: '#/definitions/light.ErrorResp'
       summary: Get details about a light.
+      tags:
+      - lights
     put:
       description: Update the state of a light in the system by ID.
       operationId: update-light-by-id
@@ -154,6 +162,8 @@ paths:
           schema:
             $ref: '#/definitions/light.ErrorResp'
       summary: Update a light.
+      tags:
+      - lights
 schemes:
 - http
 swagger: "2.0"
