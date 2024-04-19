@@ -1,58 +1,93 @@
-# How to host Swagger API documentation with GitHub Pages
-[<img alt="The blog of Peter Evans: How to Host Swagger Documentation With Github Pages" title="View blog post" src="https://peterevans.dev/img/blog-published-badge.svg">](https://peterevans.dev/posts/how-to-host-swagger-docs-with-github-pages/)
+# Josh.ai | C++ Coding Challenge
 
-This repository is a template for using the [Swagger UI](https://github.com/swagger-api/swagger-ui) to dynamically generate beautiful documentation for your API and host it for free with GitHub Pages.
+## Challenge Details
 
-The template will periodically auto-update the Swagger UI dependency and create a pull request. See the [GitHub Actions workflow here](.github/workflows/update-swagger.yml).
+The challenge is to create a program which implements a simple integration with a lights control platform (similar to Philips Hue). It should be a simple console-based program that will print out text based on the state of the lights. When the program starts up, it should print out all lights and their state. The output should be JSON in the format of the following example:
+```json
+[
+    {
+        "name": "Red Lamp", 
+        "id": "1", 
+        "room": "Living Room",
+        "on": true, 
+        "brightness": 45 
+    },
+    {
+        "name": "Green Lamp",
+        "id": "2",
+        "room": "Office",
+        "on": false,
+        "brightness": 100
+    }
+]
+```
 
-The example API specification used by this repository can be seen hosted at [https://peter-evans.github.io/swagger-github-pages](https://peter-evans.github.io/swagger-github-pages/).
+Your output does not need to be pretty printed like this, it can be a single line, however printing tab and newline formatted JSON will probably make debugging easier for yourself. The `on` property is simply a boolean of whether the light is on or off. The `brightness` property in your output should be an integer (from 0 to 100) representing the % brightness of the light.
 
-## Steps to use this template
+After printing out the initial state, your program should print out any changes in the lights' states. For example, if the Red Lamp turns off, you should print:
+```json
+{
+    "id": "1",
+    "on": false
+}
+```
 
-1. Click the `Use this template` button above to create a new repository from this template.
+If the Green Lamp is then turned on, and dimmed to 75%, you would print two changes: 
+```json
+{
+    "id": "2",
+    "on": true
+}
+{
+    "id": "2", 
+    "brightness": 75 
+}
+```
 
-2. Go to the settings for your repository at `https://github.com/{github-username}/{repository-name}/settings` and enable GitHub Pages.
+Additionally, your program should detect when a light has been added or removed in the system.  If a new light is discovered, print its full state:
+```json
+{
+    "name": "Blue Lamp", 
+    "id": "3", 
+    "room": "Living Room",
+    "on": true, 
+    "brightness": 57 
+}
+```
 
-    ![Headers](/screenshots/swagger-github-pages.png?raw=true)
-    
-3. Browse to the Swagger documentation at `https://{github-username}.github.io/{repository-name}/`.
+If a light is removed, print a message containing the `id` and `name` of the light:
+```
+Blue Lamp (3) has been removed
+```
 
+## Using the Simulator
+Download the [latest release](https://github.com/jstarllc/JoshCodingChallenge/releases/latest) of the Lights Simulator. This is a server that maintains state for a collection of lights.
 
-## Steps to manually configure in your own repository
+The Lights Simulator runs an HTTP server that you can send requests to interrogate and modify the state of the lights. This is representative of an IoT lighting system. Read through the [API Documentation](https://jstarllc.github.io/JoshCodingChallenge) to learn how to interract with the lights. 
 
-1. Download the latest stable release of the Swagger UI [here](https://github.com/swagger-api/swagger-ui/releases).
+There is a simple HTML page hosted by the Simulator. You can navigate to it in your browser at `localhost:8080` (or whatever IP and Port the Simulator is running on). This provides a simple interface for you to interact with lights to test your application.
 
-2. Extract the contents and copy the "dist" directory to the root of your repository.
+## Deliverables
+Your program must be written in C++ (preferably C++14) and include all the necessary scripts, Makefiles, and instructions for us to build it. You should also include a ready-to-run, pre-built binary for some common platform (Windows, macOS or Ubuntu/Debian).
 
-3. Move the file "index.html" from the directory "dist" to the root of your repository.
-    ```
-    mv dist/index.html .
-    ```
-    
-4. Copy the YAML specification file for your API to the root of your repository.
+Note that even with modern versions of the standard library, you will probably have to pull other libraries in to implement this. You are free to use any libraries you wish (for JSON, networking, etc.). **Any library you pull in must be header-only.** Please make sure to consider edge cases and think through how the system will perform if various real-life issues arise. We are anticipating high quality code.
 
-5. Edit [dist/swagger-initializer.js](dist/swagger-initializer.js) and change the `url` property to reference your local YAML file. 
-    ```javascript
-        window.ui = SwaggerUIBundle({
-            url: "swagger.yaml",
-        ...
-    ```
-    Then fix any references to files in the "dist" directory.
-    ```html
-    ...
-    <link rel="stylesheet" type="text/css" href="dist/swagger-ui.css" >
-    <link rel="icon" type="image/png" href="dist/favicon-32x32.png" sizes="32x32" />
-    <link rel="icon" type="image/png" href="dist/favicon-16x16.png" sizes="16x16" />    
-    ...
-    <script src="dist/swagger-ui-bundle.js"> </script>
-    <script src="dist/swagger-ui-standalone-preset.js"> </script>    
-    ...
-    ```
-    
-6. Go to the settings for your repository at `https://github.com/{github-username}/{repository-name}/settings` and enable GitHub Pages.
+**Please send compiled binaries, the source code, and full instructions to compile and run the source code.**
 
-    ![Headers](/screenshots/swagger-github-pages.png?raw=true)
-    
-7. Browse to the Swagger documentation at `https://{github-username}.github.io/{repository-name}/`.
+## Error Handling
+Various errors come up with dealing with IoT devices over the network. What happens when an HTTP request fails? What happens when JSON parsing fails? Your application must be appropriately protected and not stop due to any of these errors.
 
-   The example API specification used by this repository can be seen hosted at [https://peter-evans.github.io/swagger-github-pages](https://peter-evans.github.io/swagger-github-pages/).
+## Challenge Steps and Time Breakdown
+1. Read and understand the challenge (in broad strokes)
+1. Download and run the Simulator
+1. Search for and choose header-only libraries to use for HTTP, JSON (and optionally command line parsing). Examples include:
+    * [C++11 header-only HTTP/HTTPS client library](https://github.com/yhirose/cpp-httplib)
+    * [JSON for Modern C++](https://github.com/nlohmann/json)
+    * [Simple C++ command line parser](https://github.com/FlorianRappl/CmdParser)
+1. Implement the program
+1. Build and test the program
+1. Document the program
+
+**What we are most interested in is how you tackle the actual problem, so we want you to spend most of your time budget on your code, testing & documentation.**
+
+**Using the libraries we suggest should reduce the time and guesswork involved in development, and should result in a concise solution of no more than a few hundred lines of code.**
