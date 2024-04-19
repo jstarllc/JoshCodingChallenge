@@ -3,6 +3,7 @@ package light
 import (
 	"encoding/json"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -119,12 +120,16 @@ var (
 )
 
 // InitLights initializes lights
-func InitLights(l *string) {
-	if l == nil {
+func InitLights(l string) {
+	if len(l) == 0 {
 		json.Unmarshal([]byte(defaultLights), &lights)
 		return
 	}
-	json.Unmarshal([]byte(*l), &lights)
+	data, err := os.ReadFile(l)
+	if err != nil {
+		panic("Invalid lights data file")
+	}
+	json.Unmarshal([]byte(data), &lights)
 }
 
 // GetLights godoc

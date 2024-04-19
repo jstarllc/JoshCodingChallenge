@@ -1,8 +1,10 @@
 package main
 
 import (
+	"flag"
 	"josh-go/josh-coding-challenge/light"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,7 +15,13 @@ import (
 // @host 	localhost:8080
 // @BasePath /
 func main() {
-	light.InitLights(nil)
+	var port int
+	var data string
+	flag.IntVar(&port, "port", 8080, "Server port number")
+	flag.StringVar(&data, "data", "", "Initial lights JSON data file")
+	flag.Parse()
+
+	light.InitLights(data)
 
 	router := gin.Default()
 	router.StaticFS("/static", http.Dir("./public_html"))
@@ -29,5 +37,6 @@ func main() {
 		c.HTML(http.StatusOK, "index.html", nil)
 	})
 
-	router.Run("localhost:8080")
+	addr := "localhost:" + strconv.Itoa(port)
+	router.Run(addr)
 }
