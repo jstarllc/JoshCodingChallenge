@@ -17,13 +17,19 @@
                     <ul class="unstyled">
                         <li><button class='btn btn-block' type="button" data-url='/lights' data-body='' data-method='GET' >Get all lights</button></li>
                         <li><button class='btn btn-block' type="button" data-url='/lights/<id>' data-body='' data-method='GET' >Get light state</button></li>
-                        <li><button class='btn btn-block' type="button" data-url='/lights/<id>' data-body='{"name":"new name"}' data-method='PUT' >Rename light</button></li>
-                        <li><button class='btn btn-block' type="button" data-url='/lights/<id>' data-body='{
-    "name": "Floor Lamp",
-    "room": "Basement",
+                        <li><button class='btn btn-block' type="button" data-url='/lights/<id>' data-body='{"name": "new name"}' data-method='PUT' >Set name</button></li>
+                        <li><button class='btn btn-block' type="button" data-url='/lights/<id>' data-body='{"room": "new room"}' data-method='PUT' >Set room</button></li>
+                        <li><button class='btn btn-block' type="button" data-url='/lights/<id>' data-body='{"on": true}' data-method='PUT' >Turn on</button></li>
+                        <li><button class='btn btn-block' type="button" data-url='/lights/<id>' data-body='{"on": false}' data-method='PUT' >Turn off</button></li>
+                        <li><button class='btn btn-block' type="button" data-url='/lights/<id>' data-body='{"brightness": false}' data-method='PUT' >Set brightness</button></li>
+                        <li><button class='btn btn-block' type="button" data-url='/lights' data-body='{
+    "id": "<id>",
+    "name": "New Light",
+    "room": "Living Room",
     "on": true,
     "brightness": 200
-}' data-method='PUT' >Set light state</button></li>
+}' data-method='POST' >Add light</button></li>
+                        <li><button class='btn btn-block' type="button" data-url='/lights/<id>' data-body='' data-method='DELETE' >Remove light</button></li>
                     </ul>
                 </div>
                 <div class="span10">
