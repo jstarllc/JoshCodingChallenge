@@ -10,11 +10,12 @@ import (
 )
 
 type Light struct {
-	ID         string `json:"id"`
-	Name       string `json:"name"`
-	Room       string `json:"room"`
-	On         bool   `json:"on"`
-	Brightness uint8  `json:"brightness"`
+	ID   string `json:"id"`
+	Name string `json:"name"`
+	Room string `json:"room"`
+	On   bool   `json:"on"`
+	// Light brightness 0-255
+	Brightness uint8 `json:"brightness"`
 }
 
 type LightConcise struct {
@@ -24,10 +25,14 @@ type LightConcise struct {
 }
 
 type LightUpdateReq struct {
-	Name       *string `json:"name",omitempty`
-	Room       *string `json:"room",omitempty`
-	On         *bool   `json:"on",omitempty`
-	Brightness *uint8  `json:"brightness",omitempty`
+	// Include to set light name
+	Name *string `json:"name",omitempty`
+	// Include to set light room
+	Room *string `json:"room",omitempty`
+	// Include to set light on/off
+	On *bool `json:"on",omitempty`
+	// Include to set light brightness 0-255
+	Brightness *uint8 `json:"brightness",omitempty`
 }
 
 type ErrorResp struct {
