@@ -1,10 +1,11 @@
-module josh-go/josh-coding-challenge
+module JoshCodingChallenge
 
 go 1.20
 
 require (
 	github.com/gin-contrib/cors v1.7.1
 	github.com/gin-gonic/gin v1.9.1
+	github.com/google/uuid v1.6.0
 	github.com/swaggo/swag v1.16.3
 )
 

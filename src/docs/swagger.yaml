@@ -1,11 +1,11 @@
 basePath: /
 definitions:
-  light.ErrorResp:
+  main.ErrorResp:
     properties:
       error:
         type: string
     type: object
-  light.Light:
+  main.Light:
     properties:
       brightness:
         description: Light brightness 0-255
@@ -19,7 +19,7 @@ definitions:
       room:
         type: string
     type: object
-  light.LightConcise:
+  main.LightConcise:
     properties:
       id:
         type: string
@@ -28,7 +28,7 @@ definitions:
       room:
         type: string
     type: object
-  light.LightUpdateReq:
+  main.LightUpdate:
     properties:
       brightness:
         description: Include to set light brightness 0-255
@@ -46,8 +46,9 @@ definitions:
 host: localhost:8080
 info:
   contact: {}
-  description: API for interacting with lighting hub simulator for use in the Josh.ai
-    Backend Engineer Coding Challenge.
+  description: |-
+    API for interacting with lighting hub simulator for use in the Josh.ai Backend Engineer Coding Challenge.
+    Note: Try it Out will only work if the server is running on localhost:8080.
   title: Josh.ai Coding Challenge API
   version: "1.0"
 paths:
@@ -62,7 +63,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/light.LightConcise'
+              $ref: '#/definitions/main.LightConcise'
             type: array
       summary: Get summary of all lights.
       tags:
@@ -76,18 +77,18 @@ paths:
         name: light
         required: true
         schema:
-          $ref: '#/definitions/light.Light'
+          $ref: '#/definitions/main.Light'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/light.Light'
+            $ref: '#/definitions/main.Light'
         "400":
           description: invalid light data in body
           schema:
-            $ref: '#/definitions/light.ErrorResp'
+            $ref: '#/definitions/main.ErrorResp'
       summary: Add a light.
       tags:
       - lights
@@ -109,7 +110,7 @@ paths:
         "404":
           description: light not found
           schema:
-            $ref: '#/definitions/light.ErrorResp'
+            $ref: '#/definitions/main.ErrorResp'
       summary: Delete a light.
       tags:
       - lights
@@ -128,11 +129,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/light.Light'
+            $ref: '#/definitions/main.Light'
         "404":
           description: light not found
           schema:
-            $ref: '#/definitions/light.ErrorResp'
+            $ref: '#/definitions/main.ErrorResp'
       summary: Get details about a light.
       tags:
       - lights
@@ -150,22 +151,22 @@ paths:
         name: state
         required: true
         schema:
-          $ref: '#/definitions/light.LightUpdateReq'
+          $ref: '#/definitions/main.LightUpdate'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/light.Light'
+            $ref: '#/definitions/main.Light'
         "400":
           description: invalid fields in body
           schema:
-            $ref: '#/definitions/light.ErrorResp'
+            $ref: '#/definitions/main.ErrorResp'
         "404":
           description: light not found
           schema:
-            $ref: '#/definitions/light.ErrorResp'
+            $ref: '#/definitions/main.ErrorResp'
       summary: Update a light.
       tags:
       - lights

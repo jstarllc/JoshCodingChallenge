@@ -1,14 +1,15 @@
-package light
+package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
+// Full state of a light
 type Light struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
@@ -18,21 +19,23 @@ type Light struct {
 	Brightness uint8 `json:"brightness"`
 }
 
+// Summary of a light
 type LightConcise struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
 	Room string `json:"room"`
 }
 
-type LightUpdateReq struct {
+// Fields included in a light update request
+type LightUpdate struct {
 	// Include to set light name
-	Name *string `json:"name",omitempty`
+	Name *string `json:"name,omitempty"`
 	// Include to set light room
-	Room *string `json:"room",omitempty`
+	Room *string `json:"room,omitempty"`
 	// Include to set light on/off
-	On *bool `json:"on",omitempty`
+	On *bool `json:"on,omitempty"`
 	// Include to set light brightness 0-255
-	Brightness *uint8 `json:"brightness",omitempty`
+	Brightness *uint8 `json:"brightness,omitempty"`
 }
 
 type ErrorResp struct {
@@ -40,86 +43,33 @@ type ErrorResp struct {
 }
 
 // toConcise converts a Light to a LightConcise
-func toConcise(l *Light) LightConcise {
+func (l *Light) toConcise() LightConcise {
 	return LightConcise{l.ID, l.Name, l.Room}
 }
 
-type Lights = []Light
+// fromUpdate Populates a light from an update request
+func (l *Light) fromUpdate(update LightUpdate) {
+	if update.Name != nil {
+		l.Name = *update.Name
+	}
+	if update.Room != nil {
+		l.Room = *update.Room
+	}
+	if update.On != nil {
+		l.On = *update.On
+	}
+	if update.Brightness != nil {
+		l.Brightness = *update.Brightness
+	}
+}
 
-const (
-	defaultLights = `[
-        {
-            "id": "F06B0ED2-CC50-4EDD-A0F8-5C98A3C9D151",
-            "name": "Living Room Lamp Left",
-            "room": "Living Room",
-            "on": true,
-            "brightness": 242
-        },
-        {
-            "id": "AD7E8BB4-FF0A-4B9F-B676-E94BAF878E8F",
-            "name": "Living Room Lamp Right",
-            "room": "Living Room",
-            "on": true,
-            "brightness": 242
-        },
-        {
-            "id": "2ED8EB8E-E38B-4F86-8B9D-CBAF37BE7275",
-            "name": "Kitchen Overheads",
-            "room": "Kitchen",
-            "on": false,
-            "brightness": 0
-        },
-        {
-            "id": "AF80E5C2-B235-471D-8DF9-490703699EDA",
-            "name": "Kitchen Chandelier",
-            "room": "Kitchen",
-            "on": false,
-            "brightness": 0
-        },
-        {
-            "id": "2C85BB59-C136-49F1-A429-F02F52B6C765",
-            "name": "Pantry Light",
-            "room": "Kitchen",
-            "on": false,
-            "brightness": 0
-        },
-        {
-            "id": "56A00EC5-E3D5-4A6B-A2CF-6D88C8F6464C",
-            "name": "Office Sconce 1",
-            "room": "Office",
-            "on": true,
-            "brightness": 17
-        },
-        {
-            "id": "EDC1B691-A5AF-4524-9B57-80341D90BFA2",
-            "name": "Office Sconce 2",
-            "room": "Office",
-            "on": true,
-            "brightness": 35
-        },
-        {
-            "id": "9DF68FEC-06AC-46BF-AB61-57E9D4E963E8",
-            "name": "Office Downlights",
-            "room": "Office",
-            "on": true,
-            "brightness": 114
-        },
-        {
-            "id": "1B1920D5-22F1-43AA-9D35-371B2075D33D",
-            "name": "Porch Light",
-            "room": "Porch",
-            "on": false,
-            "brightness": 100
-        },
-        {
-            "id": "6FF183B0-710D-40DE-94A8-81584D8AE3E8",
-            "name": "String Lights",
-            "room": "Back Yard",
-            "on": false,
-            "brightness": 120
-        }
-    ]`
-)
+// isValid checks if the light update is valid
+func (l *LightUpdate) isValid() bool {
+	var empty LightUpdate
+	return *l == empty
+}
+
+type Lights = map[string]Light
 
 var (
 	lights Lights
@@ -127,25 +77,11 @@ var (
 
 // InitLights initializes lights
 func InitLights(l string) {
-	if len(l) == 0 {
-		json.Unmarshal([]byte(defaultLights), &lights)
-		return
-	}
 	data, err := os.ReadFile(l)
 	if err != nil {
 		panic("Invalid lights data file")
 	}
 	json.Unmarshal([]byte(data), &lights)
-}
-
-// findLight returns the light with matching ID
-func findLight(id string) (Light, error) {
-	for _, l := range lights {
-		if l.ID == id {
-			return l, nil
-		}
-	}
-	return Light{}, fmt.Errorf("light not found")
 }
 
 // GetLights godoc
@@ -159,7 +95,7 @@ func findLight(id string) (Light, error) {
 func GetLights(c *gin.Context) {
 	var lightsConcise []LightConcise
 	for _, l := range lights {
-		lightsConcise = append(lightsConcise, toConcise(&l))
+		lightsConcise = append(lightsConcise, l.toConcise())
 	}
 	c.IndentedJSON(http.StatusOK, lightsConcise)
 }
@@ -176,8 +112,8 @@ func GetLights(c *gin.Context) {
 // @Router /lights/{lightID} [get]
 func GetLightByID(c *gin.Context) {
 	id := c.Param("id")
-	l, err := findLight(id)
-	if err != nil {
+	l, ok := lights[id]
+	if !ok {
 		c.IndentedJSON(http.StatusNotFound, ErrorResp{"light not found"})
 		return
 	}
@@ -203,13 +139,18 @@ func AddLight(c *gin.Context) {
 		return
 	}
 
-	if _, err := findLight(newLight.ID); err == nil {
+	if newLight.ID == "" {
+		newLight.ID = uuid.New().String()
+	}
+
+	// Check whether light exists
+	if _, ok := lights[newLight.ID]; ok {
 		c.IndentedJSON(http.StatusBadRequest, ErrorResp{"light already exists with that ID"})
 		return
 	}
 
 	// Add the new light to our collection
-	lights = append(lights, newLight)
+	lights[newLight.ID] = newLight
 	c.IndentedJSON(http.StatusCreated, newLight)
 }
 
@@ -226,18 +167,14 @@ func AddLight(c *gin.Context) {
 func DeleteLightByID(c *gin.Context) {
 	id := c.Param("id")
 
-	// Keep all but the requested light
-	var newLights Lights
-	for _, l := range lights {
-		if l.ID != id {
-			newLights = append(newLights, l)
-		}
-	}
-	if len(lights) == len(newLights) {
+	// Check whether light exists
+	if _, ok := lights[id]; !ok {
 		c.IndentedJSON(http.StatusNotFound, ErrorResp{"light not found"})
 		return
 	}
-	lights = newLights
+
+	// Remove the light
+	delete(lights, id)
 	c.Status(http.StatusNoContent)
 }
 
@@ -246,7 +183,7 @@ func DeleteLightByID(c *gin.Context) {
 // @Description Update the state of a light in the system by ID.
 // @Tags lights
 // @Param				lightID path string true "ID of light"
-// @Param				state body LightUpdateReq true "State fields to update"
+// @Param				state body LightUpdate true "State fields to update"
 // @ID update-light-by-id
 // @Produce json
 // @Success 200 {object} Light
@@ -256,37 +193,29 @@ func DeleteLightByID(c *gin.Context) {
 func UpdateLightByID(c *gin.Context) {
 	id := c.Param("id")
 
-	var updateReq LightUpdateReq
+	// Check whether light exists
+	if _, ok := lights[id]; !ok {
+		c.IndentedJSON(http.StatusNotFound, ErrorResp{"light not found"})
+		return
+	}
+
+	// Deserialize the update data from body
+	var updateReq LightUpdate
 	if err := c.BindJSON(&updateReq); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, ErrorResp{"invalid fields in body"})
 		return
 	}
 
-	var emptyReq LightUpdateReq
-	if updateReq == emptyReq {
+	// Validate the update fields
+	if !updateReq.isValid() {
 		c.IndentedJSON(http.StatusBadRequest, ErrorResp{"no valid fields in body"})
 		return
 	}
 
-	for i, l := range lights {
-		if l.ID == id {
-			if updateReq.Name != nil {
-				l.Name = *updateReq.Name
-			}
-			if updateReq.Room != nil {
-				l.Room = *updateReq.Room
-			}
-			if updateReq.On != nil {
-				l.On = *updateReq.On
-			}
-			if updateReq.Brightness != nil {
-				l.Brightness = *updateReq.Brightness
-			}
-			lights[i] = l
-			c.IndentedJSON(http.StatusOK, l)
-			return
-		}
-	}
-
-	c.IndentedJSON(http.StatusNotFound, ErrorResp{"light not found"})
+	// Update the light
+	var l Light
+	l.ID = id
+	l.fromUpdate(updateReq)
+	lights[id] = l
+	c.IndentedJSON(http.StatusOK, l)
 }
