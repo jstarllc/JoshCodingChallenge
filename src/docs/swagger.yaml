@@ -46,8 +46,9 @@ definitions:
 host: localhost:8080
 info:
   contact: {}
-  description: API for interacting with lighting hub simulator for use in the Josh.ai
-    Backend Engineer Coding Challenge.
+  description: |-
+    API for interacting with lighting hub simulator for use in the Josh.ai Backend Engineer Coding Challenge.
+    Note: Try it Out will only work if the server is running on localhost:8080.
   title: Josh.ai Coding Challenge API
   version: "1.0"
 paths:

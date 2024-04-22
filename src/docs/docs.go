@@ -267,7 +267,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/",
 	Schemes:          []string{"http"},
 	Title:            "Josh.ai Coding Challenge API",
-	Description:      "API for interacting with lighting hub simulator for use in the Josh.ai Backend Engineer Coding Challenge.",
+	Description:      "API for interacting with lighting hub simulator for use in the Josh.ai Backend Engineer Coding Challenge.\nNote: Try it Out will only work if the server is running on localhost:8080.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

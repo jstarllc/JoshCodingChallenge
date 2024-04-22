@@ -13,6 +13,7 @@ import (
 // @title Josh.ai Coding Challenge API
 // @version	1.0
 // @description API for interacting with lighting hub simulator for use in the Josh.ai Backend Engineer Coding Challenge.
+// @description Note: Try it Out will only work if the server is running on localhost:8080.
 // @host 	localhost:8080
 // @schemes http
 // @BasePath /
