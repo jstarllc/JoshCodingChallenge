@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 // Full state of a light
@@ -215,6 +216,10 @@ func AddLight(c *gin.Context) {
 	if err := c.BindJSON(&newLight); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, ErrorResp{"invalid light data in body"})
 		return
+	}
+
+	if newLight.ID == "" {
+		newLight.ID = uuid.New().String()
 	}
 
 	// Check whether light exists
