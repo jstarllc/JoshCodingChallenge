@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"josh-go/josh-coding-challenge/light"
 	"net/http"
 
 	"github.com/gin-contrib/cors"
@@ -26,7 +25,7 @@ func main() {
 	flag.Parse()
 
 	// Initialize light data
-	light.InitLights(data)
+	InitLights(data)
 
 	// Initialize server
 	router := gin.Default()
@@ -35,11 +34,11 @@ func main() {
 	router.StaticFS("/static", http.Dir("./public_html"))
 	router.LoadHTMLFiles("./public_html/index.html")
 
-	router.GET("/lights", light.GetLights)
-	router.GET("/lights/:id", light.GetLightByID)
-	router.POST("/lights", light.AddLight)
-	router.DELETE("/lights/:id", light.DeleteLightByID)
-	router.PUT("/lights/:id", light.UpdateLightByID)
+	router.GET("/lights", GetLights)
+	router.GET("/lights/:id", GetLightByID)
+	router.POST("/lights", AddLight)
+	router.DELETE("/lights/:id", DeleteLightByID)
+	router.PUT("/lights/:id", UpdateLightByID)
 
 	// Host simple GUI for control
 	router.GET("/", func(c *gin.Context) {

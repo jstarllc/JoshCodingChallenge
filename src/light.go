@@ -1,4 +1,4 @@
-package light
+package main
 
 import (
 	"encoding/json"

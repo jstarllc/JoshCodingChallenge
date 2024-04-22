@@ -1,4 +1,4 @@
-module josh-go/josh-coding-challenge
+module JoshCodingChallenge
 
 go 1.20
 
