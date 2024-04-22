@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"os"
 
@@ -47,10 +46,32 @@ func (l *Light) toConcise() LightConcise {
 	return LightConcise{l.ID, l.Name, l.Room}
 }
 
-type Lights = []Light
+// fromUpdate Populates a light from an update request
+func (l *Light) fromUpdate(update LightUpdate) {
+	if update.Name != nil {
+		l.Name = *update.Name
+	}
+	if update.Room != nil {
+		l.Room = *update.Room
+	}
+	if update.On != nil {
+		l.On = *update.On
+	}
+	if update.Brightness != nil {
+		l.Brightness = *update.Brightness
+	}
+}
+
+// isValid checks if the light update is valid
+func (l *LightUpdate) isValid() bool {
+	var empty LightUpdate
+	return *l == empty
+}
+
+type Lights = map[string]Light
 
 const (
-	defaultLights = `[
+	defaultLights = `{
         {
             "id": "F06B0ED2-CC50-4EDD-A0F8-5C98A3C9D151",
             "name": "Living Room Lamp Left",
@@ -121,7 +142,7 @@ const (
             "on": false,
             "brightness": 120
         }
-    ]`
+    }`
 )
 
 var (
@@ -139,16 +160,6 @@ func InitLights(l string) {
 		panic("Invalid lights data file")
 	}
 	json.Unmarshal([]byte(data), &lights)
-}
-
-// findLight returns the light with matching ID
-func findLight(id string) (Light, error) {
-	for _, l := range lights {
-		if l.ID == id {
-			return l, nil
-		}
-	}
-	return Light{}, fmt.Errorf("light not found")
 }
 
 // GetLights godoc
@@ -179,8 +190,8 @@ func GetLights(c *gin.Context) {
 // @Router /lights/{lightID} [get]
 func GetLightByID(c *gin.Context) {
 	id := c.Param("id")
-	l, err := findLight(id)
-	if err != nil {
+	l, ok := lights[id]
+	if !ok {
 		c.IndentedJSON(http.StatusNotFound, ErrorResp{"light not found"})
 		return
 	}
@@ -206,13 +217,14 @@ func AddLight(c *gin.Context) {
 		return
 	}
 
-	if _, err := findLight(newLight.ID); err == nil {
+	// Check whether light exists
+	if _, ok := lights[newLight.ID]; ok {
 		c.IndentedJSON(http.StatusBadRequest, ErrorResp{"light already exists with that ID"})
 		return
 	}
 
 	// Add the new light to our collection
-	lights = append(lights, newLight)
+	lights[newLight.ID] = newLight
 	c.IndentedJSON(http.StatusCreated, newLight)
 }
 
@@ -229,18 +241,14 @@ func AddLight(c *gin.Context) {
 func DeleteLightByID(c *gin.Context) {
 	id := c.Param("id")
 
-	// Keep all but the requested light
-	var newLights Lights
-	for _, l := range lights {
-		if l.ID != id {
-			newLights = append(newLights, l)
-		}
-	}
-	if len(lights) == len(newLights) {
+	// Check whether light exists
+	if _, ok := lights[id]; !ok {
 		c.IndentedJSON(http.StatusNotFound, ErrorResp{"light not found"})
 		return
 	}
-	lights = newLights
+
+	// Remove the light
+	delete(lights, id)
 	c.Status(http.StatusNoContent)
 }
 
@@ -259,37 +267,29 @@ func DeleteLightByID(c *gin.Context) {
 func UpdateLightByID(c *gin.Context) {
 	id := c.Param("id")
 
+	// Check whether light exists
+	if _, ok := lights[id]; !ok {
+		c.IndentedJSON(http.StatusNotFound, ErrorResp{"light not found"})
+		return
+	}
+
+	// Deserialize the update data from body
 	var updateReq LightUpdate
 	if err := c.BindJSON(&updateReq); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, ErrorResp{"invalid fields in body"})
 		return
 	}
 
-	var emptyReq LightUpdate
-	if updateReq == emptyReq {
+	// Validate the update fields
+	if !updateReq.isValid() {
 		c.IndentedJSON(http.StatusBadRequest, ErrorResp{"no valid fields in body"})
 		return
 	}
 
-	for i, l := range lights {
-		if l.ID == id {
-			if updateReq.Name != nil {
-				l.Name = *updateReq.Name
-			}
-			if updateReq.Room != nil {
-				l.Room = *updateReq.Room
-			}
-			if updateReq.On != nil {
-				l.On = *updateReq.On
-			}
-			if updateReq.Brightness != nil {
-				l.Brightness = *updateReq.Brightness
-			}
-			lights[i] = l
-			c.IndentedJSON(http.StatusOK, l)
-			return
-		}
-	}
-
-	c.IndentedJSON(http.StatusNotFound, ErrorResp{"light not found"})
+	// Update the light
+	var l Light
+	l.ID = id
+	l.fromUpdate(updateReq)
+	lights[id] = l
+	c.IndentedJSON(http.StatusOK, l)
 }
