@@ -2,9 +2,9 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"josh-go/josh-coding-challenge/light"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -47,6 +47,6 @@ func main() {
 	})
 
 	// Run the server
-	addr := "localhost:" + strconv.Itoa(port)
+	addr := fmt.Sprintf(":%d", port)
 	router.Run(addr)
 }
