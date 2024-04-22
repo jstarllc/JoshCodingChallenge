@@ -194,7 +194,9 @@ func UpdateLightByID(c *gin.Context) {
 	id := c.Param("id")
 
 	// Check whether light exists
-	if _, ok := lights[id]; !ok {
+	var l Light
+	var ok bool
+	if l, ok = lights[id]; !ok {
 		c.IndentedJSON(http.StatusNotFound, ErrorResp{"light not found"})
 		return
 	}
@@ -213,8 +215,6 @@ func UpdateLightByID(c *gin.Context) {
 	}
 
 	// Update the light
-	var l Light
-	l.ID = id
 	l.fromUpdate(updateReq)
 	lights[id] = l
 	c.IndentedJSON(http.StatusOK, l)
