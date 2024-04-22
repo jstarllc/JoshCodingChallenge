@@ -66,7 +66,7 @@ func (l *Light) fromUpdate(update LightUpdate) {
 // isValid checks if the light update is valid
 func (l *LightUpdate) isValid() bool {
 	var empty LightUpdate
-	return *l == empty
+	return *l != empty
 }
 
 type Lights = map[string]Light
