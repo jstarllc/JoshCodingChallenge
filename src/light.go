@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Full state of a light
 type Light struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
@@ -18,13 +19,15 @@ type Light struct {
 	Brightness uint8 `json:"brightness"`
 }
 
+// Summary of a light
 type LightConcise struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
 	Room string `json:"room"`
 }
 
-type LightUpdateReq struct {
+// Fields included in a light update request
+type LightUpdate struct {
 	// Include to set light name
 	Name *string `json:"name",omitempty`
 	// Include to set light room
@@ -246,7 +249,7 @@ func DeleteLightByID(c *gin.Context) {
 // @Description Update the state of a light in the system by ID.
 // @Tags lights
 // @Param				lightID path string true "ID of light"
-// @Param				state body LightUpdateReq true "State fields to update"
+// @Param				state body LightUpdate true "State fields to update"
 // @ID update-light-by-id
 // @Produce json
 // @Success 200 {object} Light
@@ -256,13 +259,13 @@ func DeleteLightByID(c *gin.Context) {
 func UpdateLightByID(c *gin.Context) {
 	id := c.Param("id")
 
-	var updateReq LightUpdateReq
+	var updateReq LightUpdate
 	if err := c.BindJSON(&updateReq); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, ErrorResp{"invalid fields in body"})
 		return
 	}
 
-	var emptyReq LightUpdateReq
+	var emptyReq LightUpdate
 	if updateReq == emptyReq {
 		c.IndentedJSON(http.StatusBadRequest, ErrorResp{"no valid fields in body"})
 		return

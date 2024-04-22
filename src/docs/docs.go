@@ -32,7 +32,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/light.LightConcise"
+                                "$ref": "#/definitions/main.LightConcise"
                             }
                         }
                     }
@@ -55,7 +55,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/light.Light"
+                            "$ref": "#/definitions/main.Light"
                         }
                     }
                 ],
@@ -63,13 +63,13 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/light.Light"
+                            "$ref": "#/definitions/main.Light"
                         }
                     },
                     "400": {
                         "description": "invalid light data in body",
                         "schema": {
-                            "$ref": "#/definitions/light.ErrorResp"
+                            "$ref": "#/definitions/main.ErrorResp"
                         }
                     }
                 }
@@ -99,13 +99,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/light.Light"
+                            "$ref": "#/definitions/main.Light"
                         }
                     },
                     "404": {
                         "description": "light not found",
                         "schema": {
-                            "$ref": "#/definitions/light.ErrorResp"
+                            "$ref": "#/definitions/main.ErrorResp"
                         }
                     }
                 }
@@ -134,7 +134,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/light.LightUpdateReq"
+                            "$ref": "#/definitions/main.LightUpdate"
                         }
                     }
                 ],
@@ -142,19 +142,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/light.Light"
+                            "$ref": "#/definitions/main.Light"
                         }
                     },
                     "400": {
                         "description": "invalid fields in body",
                         "schema": {
-                            "$ref": "#/definitions/light.ErrorResp"
+                            "$ref": "#/definitions/main.ErrorResp"
                         }
                     },
                     "404": {
                         "description": "light not found",
                         "schema": {
-                            "$ref": "#/definitions/light.ErrorResp"
+                            "$ref": "#/definitions/main.ErrorResp"
                         }
                     }
                 }
@@ -185,7 +185,7 @@ const docTemplate = `{
                     "404": {
                         "description": "light not found",
                         "schema": {
-                            "$ref": "#/definitions/light.ErrorResp"
+                            "$ref": "#/definitions/main.ErrorResp"
                         }
                     }
                 }
@@ -193,7 +193,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "light.ErrorResp": {
+        "main.ErrorResp": {
             "type": "object",
             "properties": {
                 "error": {
@@ -201,7 +201,7 @@ const docTemplate = `{
                 }
             }
         },
-        "light.Light": {
+        "main.Light": {
             "type": "object",
             "properties": {
                 "brightness": {
@@ -222,7 +222,7 @@ const docTemplate = `{
                 }
             }
         },
-        "light.LightConcise": {
+        "main.LightConcise": {
             "type": "object",
             "properties": {
                 "id": {
@@ -236,7 +236,7 @@ const docTemplate = `{
                 }
             }
         },
-        "light.LightUpdateReq": {
+        "main.LightUpdate": {
             "type": "object",
             "properties": {
                 "brightness": {

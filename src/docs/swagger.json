@@ -29,7 +29,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/light.LightConcise"
+                                "$ref": "#/definitions/main.LightConcise"
                             }
                         }
                     }
@@ -52,7 +52,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/light.Light"
+                            "$ref": "#/definitions/main.Light"
                         }
                     }
                 ],
@@ -60,13 +60,13 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/light.Light"
+                            "$ref": "#/definitions/main.Light"
                         }
                     },
                     "400": {
                         "description": "invalid light data in body",
                         "schema": {
-                            "$ref": "#/definitions/light.ErrorResp"
+                            "$ref": "#/definitions/main.ErrorResp"
                         }
                     }
                 }
@@ -96,13 +96,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/light.Light"
+                            "$ref": "#/definitions/main.Light"
                         }
                     },
                     "404": {
                         "description": "light not found",
                         "schema": {
-                            "$ref": "#/definitions/light.ErrorResp"
+                            "$ref": "#/definitions/main.ErrorResp"
                         }
                     }
                 }
@@ -131,7 +131,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/light.LightUpdateReq"
+                            "$ref": "#/definitions/main.LightUpdate"
                         }
                     }
                 ],
@@ -139,19 +139,19 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/light.Light"
+                            "$ref": "#/definitions/main.Light"
                         }
                     },
                     "400": {
                         "description": "invalid fields in body",
                         "schema": {
-                            "$ref": "#/definitions/light.ErrorResp"
+                            "$ref": "#/definitions/main.ErrorResp"
                         }
                     },
                     "404": {
                         "description": "light not found",
                         "schema": {
-                            "$ref": "#/definitions/light.ErrorResp"
+                            "$ref": "#/definitions/main.ErrorResp"
                         }
                     }
                 }
@@ -182,7 +182,7 @@
                     "404": {
                         "description": "light not found",
                         "schema": {
-                            "$ref": "#/definitions/light.ErrorResp"
+                            "$ref": "#/definitions/main.ErrorResp"
                         }
                     }
                 }
@@ -190,7 +190,7 @@
         }
     },
     "definitions": {
-        "light.ErrorResp": {
+        "main.ErrorResp": {
             "type": "object",
             "properties": {
                 "error": {
@@ -198,7 +198,7 @@
                 }
             }
         },
-        "light.Light": {
+        "main.Light": {
             "type": "object",
             "properties": {
                 "brightness": {
@@ -219,7 +219,7 @@
                 }
             }
         },
-        "light.LightConcise": {
+        "main.LightConcise": {
             "type": "object",
             "properties": {
                 "id": {
@@ -233,7 +233,7 @@
                 }
             }
         },
-        "light.LightUpdateReq": {
+        "main.LightUpdate": {
             "type": "object",
             "properties": {
                 "brightness": {
