@@ -29,13 +29,13 @@ type LightConcise struct {
 // Fields included in a light update request
 type LightUpdate struct {
 	// Include to set light name
-	Name *string `json:"name",omitempty`
+	Name *string `json:"name,omitempty"`
 	// Include to set light room
-	Room *string `json:"room",omitempty`
+	Room *string `json:"room,omitempty"`
 	// Include to set light on/off
-	On *bool `json:"on",omitempty`
+	On *bool `json:"on,omitempty"`
 	// Include to set light brightness 0-255
-	Brightness *uint8 `json:"brightness",omitempty`
+	Brightness *uint8 `json:"brightness,omitempty"`
 }
 
 type ErrorResp struct {
@@ -43,7 +43,7 @@ type ErrorResp struct {
 }
 
 // toConcise converts a Light to a LightConcise
-func toConcise(l *Light) LightConcise {
+func (l *Light) toConcise() LightConcise {
 	return LightConcise{l.ID, l.Name, l.Room}
 }
 
@@ -162,7 +162,7 @@ func findLight(id string) (Light, error) {
 func GetLights(c *gin.Context) {
 	var lightsConcise []LightConcise
 	for _, l := range lights {
-		lightsConcise = append(lightsConcise, toConcise(&l))
+		lightsConcise = append(lightsConcise, l.toConcise())
 	}
 	c.IndentedJSON(http.StatusOK, lightsConcise)
 }
