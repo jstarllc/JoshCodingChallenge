@@ -69,11 +69,7 @@ func (l *LightUpdate) isValid() bool {
 	return *l != empty
 }
 
-type Lights = map[string]Light
-
-var (
-	lights Lights
-)
+var lights map[string]Light
 
 // InitLights initializes lights
 func InitLights(l string) {
@@ -93,11 +89,11 @@ func InitLights(l string) {
 // @Success 200 {array} LightConcise
 // @Router /lights [get]
 func GetLights(c *gin.Context) {
-	var lightsConcise []LightConcise
+	var ls []LightConcise
 	for _, l := range lights {
-		lightsConcise = append(lightsConcise, l.toConcise())
+		ls = append(ls, l.toConcise())
 	}
-	c.IndentedJSON(http.StatusOK, lightsConcise)
+	c.IndentedJSON(http.StatusOK, ls)
 }
 
 // GetLightByID godoc
@@ -131,27 +127,27 @@ func GetLightByID(c *gin.Context) {
 // @Failure 400 {object} ErrorResp "invalid light data in body"
 // @Router /lights [post]
 func AddLight(c *gin.Context) {
-	var newLight Light
+	var l Light
 
 	// Deserialize the light data from body
-	if err := c.BindJSON(&newLight); err != nil {
+	if err := c.BindJSON(&l); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, ErrorResp{"invalid light data in body"})
 		return
 	}
 
-	if newLight.ID == "" {
-		newLight.ID = uuid.New().String()
+	if l.ID == "" {
+		l.ID = uuid.New().String()
 	}
 
 	// Check whether light exists
-	if _, ok := lights[newLight.ID]; ok {
+	if _, ok := lights[l.ID]; ok {
 		c.IndentedJSON(http.StatusBadRequest, ErrorResp{"light already exists with that ID"})
 		return
 	}
 
 	// Add the new light to our collection
-	lights[newLight.ID] = newLight
-	c.IndentedJSON(http.StatusCreated, newLight)
+	lights[l.ID] = l
+	c.IndentedJSON(http.StatusCreated, l)
 }
 
 // DeleteLightByID godoc
