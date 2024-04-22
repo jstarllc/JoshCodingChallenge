@@ -75,7 +75,7 @@ Note that even with modern versions of the standard library, you will probably h
 **Please send compiled binaries, the source code, and full instructions to compile and run the source code.**
 
 ## Error Handling
-Various errors come up when dealing with IoT devices over the network. Your application must be appropriately protected and not stop due to any such errors.
+Various errors come up when dealing with IoT devices over the network. Your application must be appropriately protected and not stop due to any such errors. Things to keep in mind:
 * What happens when an HTTP request fails?
 * What happens when JSON parsing fails?
 
