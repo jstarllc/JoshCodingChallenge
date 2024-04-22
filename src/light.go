@@ -71,91 +71,12 @@ func (l *LightUpdate) isValid() bool {
 
 type Lights = map[string]Light
 
-const (
-	defaultLights = `{
-        {
-            "id": "F06B0ED2-CC50-4EDD-A0F8-5C98A3C9D151",
-            "name": "Living Room Lamp Left",
-            "room": "Living Room",
-            "on": true,
-            "brightness": 242
-        },
-        {
-            "id": "AD7E8BB4-FF0A-4B9F-B676-E94BAF878E8F",
-            "name": "Living Room Lamp Right",
-            "room": "Living Room",
-            "on": true,
-            "brightness": 242
-        },
-        {
-            "id": "2ED8EB8E-E38B-4F86-8B9D-CBAF37BE7275",
-            "name": "Kitchen Overheads",
-            "room": "Kitchen",
-            "on": false,
-            "brightness": 0
-        },
-        {
-            "id": "AF80E5C2-B235-471D-8DF9-490703699EDA",
-            "name": "Kitchen Chandelier",
-            "room": "Kitchen",
-            "on": false,
-            "brightness": 0
-        },
-        {
-            "id": "2C85BB59-C136-49F1-A429-F02F52B6C765",
-            "name": "Pantry Light",
-            "room": "Kitchen",
-            "on": false,
-            "brightness": 0
-        },
-        {
-            "id": "56A00EC5-E3D5-4A6B-A2CF-6D88C8F6464C",
-            "name": "Office Sconce 1",
-            "room": "Office",
-            "on": true,
-            "brightness": 17
-        },
-        {
-            "id": "EDC1B691-A5AF-4524-9B57-80341D90BFA2",
-            "name": "Office Sconce 2",
-            "room": "Office",
-            "on": true,
-            "brightness": 35
-        },
-        {
-            "id": "9DF68FEC-06AC-46BF-AB61-57E9D4E963E8",
-            "name": "Office Downlights",
-            "room": "Office",
-            "on": true,
-            "brightness": 114
-        },
-        {
-            "id": "1B1920D5-22F1-43AA-9D35-371B2075D33D",
-            "name": "Porch Light",
-            "room": "Porch",
-            "on": false,
-            "brightness": 100
-        },
-        {
-            "id": "6FF183B0-710D-40DE-94A8-81584D8AE3E8",
-            "name": "String Lights",
-            "room": "Back Yard",
-            "on": false,
-            "brightness": 120
-        }
-    }`
-)
-
 var (
 	lights Lights
 )
 
 // InitLights initializes lights
 func InitLights(l string) {
-	if len(l) == 0 {
-		json.Unmarshal([]byte(defaultLights), &lights)
-		return
-	}
 	data, err := os.ReadFile(l)
 	if err != nil {
 		panic("Invalid lights data file")

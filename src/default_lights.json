@@ -1,0 +1,72 @@
+{
+    "f06b0ed2-cc50-4edd-a0f8-5c98a3c9d151": {
+        "id": "f06b0ed2-cc50-4edd-a0f8-5c98a3c9d151",
+        "name": "Living Room Lamp Left",
+        "room": "Living Room",
+        "on": true,
+        "brightness": 242
+    },
+    "ad7e8bb4-ff0a-4b9f-b676-e94baf878e8f": {
+        "id": "ad7e8bb4-ff0a-4b9f-b676-e94baf878e8f",
+        "name": "Living Room Lamp Right",
+        "room": "Living Room",
+        "on": true,
+        "brightness": 242
+    },
+    "2ed8eb8e-e38b-4f86-8b9d-cbaf37be7275": {
+        "id": "2ed8eb8e-e38b-4f86-8b9d-cbaf37be7275",
+        "name": "Kitchen Overheads",
+        "room": "Kitchen",
+        "on": false,
+        "brightness": 0
+    },
+    "af80e5c2-b235-471d-8df9-490703699eda": {
+        "id": "af80e5c2-b235-471d-8df9-490703699eda",
+        "name": "Kitchen Chandelier",
+        "room": "Kitchen",
+        "on": false,
+        "brightness": 0
+    },
+    "2c85bb59-c136-49f1-a429-f02f52b6c765": {
+        "id": "2c85bb59-c136-49f1-a429-f02f52b6c765",
+        "name": "Pantry Light",
+        "room": "Kitchen",
+        "on": false,
+        "brightness": 0
+    },
+    "56a00ec5-e3d5-4a6b-a2cf-6d88c8f6464c": {
+        "id": "56a00ec5-e3d5-4a6b-a2cf-6d88c8f6464c",
+        "name": "Office Sconce 1",
+        "room": "Office",
+        "on": true,
+        "brightness": 17
+    },
+    "edc1b691-a5af-4524-9b57-80341d90bfa2": {
+        "id": "edc1b691-a5af-4524-9b57-80341d90bfa2",
+        "name": "Office Sconce 2",
+        "room": "Office",
+        "on": true,
+        "brightness": 35
+    },
+    "9df68fec-06ac-46bf-ab61-57e9d4e963e8": {
+        "id": "9df68fec-06ac-46bf-ab61-57e9d4e963e8",
+        "name": "Office Downlights",
+        "room": "Office",
+        "on": true,
+        "brightness": 114
+    },
+    "1b1920d5-22f1-43aa-9d35-371b2075d33d": {
+        "id": "1b1920d5-22f1-43aa-9d35-371b2075d33d",
+        "name": "Porch Light",
+        "room": "Porch",
+        "on": false,
+        "brightness": 100
+    },
+    "6ff183b0-710d-40de-94a8-81584d8ae3e8": {
+        "id": "6ff183b0-710d-40de-94a8-81584d8ae3e8",
+        "name": "String Lights",
+        "room": "Back Yard",
+        "on": false,
+        "brightness": 120
+    }
+}

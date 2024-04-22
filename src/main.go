@@ -9,6 +9,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const (
+	defaultPort       = 8080
+	defaultLightsPath = "default_lights.json"
+)
+
 // @title Josh.ai Coding Challenge API
 // @version	1.0
 // @description API for interacting with lighting hub simulator for use in the Josh.ai Backend Engineer Coding Challenge.
@@ -20,8 +25,8 @@ func main() {
 	// CLI params
 	var port int
 	var data string
-	flag.IntVar(&port, "port", 8080, "Server port number")
-	flag.StringVar(&data, "data", "", "Initial lights JSON data file")
+	flag.IntVar(&port, "port", defaultPort, "Server port number")
+	flag.StringVar(&data, "data", defaultLightsPath, "Initial lights JSON data file")
 	flag.Parse()
 
 	// Initialize light data
