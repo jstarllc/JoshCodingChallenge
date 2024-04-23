@@ -19,6 +19,11 @@ function DoBuild()
 
   echo "Building ${out_filename} for ${1}/${2}"
   go build -ldflags "-X 'main.gVersion=${exe_ver}' -X 'main.gBuildDate=${build_date}'" -o "$out_filename" || exit 10
+
+  # Sign windows binary
+  if [ "${1}" == "windows" ] && [ "$(uname -o)" == "Msys" ]; then
+    powershell -file ".\sign_windows.ps1" -file "${out_filename}"
+  fi
 }
 
 # Build binaries
