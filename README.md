@@ -67,7 +67,7 @@ Download the [latest release](https://github.com/jstarllc/JoshCodingChallenge/re
 
 The Lights Simulator runs an HTTP server that you can send requests to interrogate and modify the state of the lights. This is representative of an IoT lighting system. Read through the [API Documentation](https://jstarllc.github.io/JoshCodingChallenge) to learn how to interract with the lights. 
 
-There is a simple HTML page hosted by the Simulator. You can navigate to it in your browser at `localhost:8080` (or whatever IP and Port the Simulator is running on). This provides a simple interface for you to interact with lights to test your application.
+There is a simple HTML page hosted by the Simulator. You can navigate to it in your browser at `localhost:8080` (or whatever IP and Port the Simulator is running on). This provides a simple GUI for you to interact with lights to test your application. Use this to trigger changes in the light state for your monitor program to print out.
 
 ## Deliverables
 Your program must be written in C++ (preferably C++14) and include all the necessary scripts, Makefiles, and instructions for us to build it. You should also include a ready-to-run, pre-built binary for some common platform (Windows, macOS or Ubuntu/Debian).
