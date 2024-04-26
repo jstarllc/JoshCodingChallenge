@@ -60,7 +60,7 @@ If a light is removed, print a message containing the `id` and `name` of the lig
 Blue Lamp (3) has been removed
 ```
 
-**Your program should continue to monitor changes in the lights' states and should not end until stopped by the user.**
+**Your program should continue to monitor changes in the lights' states until stopped by the user.**
 
 ## Using the Simulator
 Download the [latest release](https://github.com/jstarllc/JoshCodingChallenge/releases/latest) of the Lights Simulator. This is a server that maintains state for a collection of lights.
