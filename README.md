@@ -44,7 +44,7 @@ If the Green Lamp is then turned on, and dimmed to 75%, you would print two chan
 }
 ```
 
-Additionally, your program should detect when a light has been added or removed in the system.  If a new light is discovered, print its full state:
+Additionally, your program should detect when a light has been added or removed in the system. If a new light is discovered, print its full state:
 ```json
 {
     "name": "Blue Lamp", 
@@ -59,6 +59,8 @@ If a light is removed, print a message containing the `id` and `name` of the lig
 ```
 Blue Lamp (3) has been removed
 ```
+
+**Your program should continue to monitor changes in the lights' states and should not end until stopped by the user.**
 
 ## Using the Simulator
 Download the [latest release](https://github.com/jstarllc/JoshCodingChallenge/releases/latest) of the Lights Simulator. This is a server that maintains state for a collection of lights.
