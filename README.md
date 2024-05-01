@@ -74,6 +74,12 @@ Your program must be written in C++ (preferably C++14) and include all the neces
 
 Note that even with modern versions of the standard library, you will probably have to pull other libraries in to implement this. You are free to use any libraries you wish (for JSON, networking, etc.). **Any library you pull in must be header-only.** Please make sure to consider edge cases and think through how the system will perform if various real-life issues arise. We are anticipating high quality code.
 
+High quality code is more than functional. A good submission will be:
+* Readable
+* Logical
+* Efficient
+* Not over-engineered
+
 **Please send compiled binaries, the source code, and full instructions to compile and run the source code.**
 
 ## Error Handling
